@@ -47,9 +47,10 @@ Ease production of VBA code with the VBEX library of rich idiomatic containers a
 
   1. Use Class Constructors for immutable classes.
   1. Print meaningful debug methods that reveal a datastructures contents
-
+        ```vba
         Console.PrintLine List.Create(1, 2, 3, 4) ' Note usage of class constructors
         List(1, 2, 3, 4)
+        ```
 
   1. Create functional objects to use with higher order functions.  With those we have created some monadic classes _(List, Maybe, Try)_ that implement the traditonal `Map`, `FlatMap` or `Bind` methods.
   1. Access a growing library of Containers.
@@ -81,7 +82,7 @@ VBEX is not a normal VBA library, before you start using you should understand t
 All public classes have a predeclared instance of that class called the "predeclared object".
   - The predeclared object has the same name as the class, _e.g._
 
-```
+```vba
 Dim xs As List ' word "List" as a type
 Set xs = List.Create(1, 2, 3) ' word "List" here is the predeclared object
 ```
@@ -94,17 +95,20 @@ Set xs = List.Create(1, 2, 3) ' word "List" here is the predeclared object
 Since VBA has only Interface Inheritance,
 code that would be put in parent or abstract classesis instead put into `def*` modules.
 While this reduces code duplication, it only reduces it to trivial code like,
+    
+```vba
+Public Function IsSubSetOf(ByVal other As SetLike) As Boolean
 
-    Public Function IsSubSetOf(ByVal other As SetLike) As Boolean
-        
-        IsSubSetOf = defSetLike.IsSubSetOf(Me, other)
-        
-    End Function
-    Private Function SetLike_IsSubSetOf(ByVal other As SetLike) As Boolean
+    IsSubSetOf = defSetLike.IsSubSetOf(Me, other)
 
-        SetLike_IsSubSetOf = IsSubSetOf(other)
+End Function
 
-    End Function
+Private Function SetLike_IsSubSetOf(ByVal other As SetLike) As Boolean
+
+    SetLike_IsSubSetOf = IsSubSetOf(other)
+
+End Function
+```
 
 This screams for some macro or preprocessing system, but that doesn't exist yet.
 
